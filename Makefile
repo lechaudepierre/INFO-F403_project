@@ -1,6 +1,6 @@
 all:
 	jflex src/Lexer1.flex
-	javac src/Lexer1.java
+	javac src/LexicalAnalyzer.java
 
 test:
-	java Lexer1 test/Euclid.gls
+	java src/LexicalAnalyzer.java test/Euclid.gls
