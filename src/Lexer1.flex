@@ -1,10 +1,3 @@
-package src;
-
-import LexicalUnit;
-import Symbol;
-
-
-
 %%
 %class LexicalAnalyzer
 %unicode

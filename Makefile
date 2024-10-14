@@ -3,4 +3,4 @@ all:
 	javac src/LexicalAnalyzer.java
 
 test:
-	java src/LexicalAnalyzer.java test/Euclid.gls
+	java src/LexicalAnalyzer test/Euclid.gls
