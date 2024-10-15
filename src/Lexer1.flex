@@ -5,7 +5,8 @@
 %standalone
 %column
 // the return type of the lexical analyzer
-%type Symbol  
+%type Symbol 
+%function nextSymbol 
 
 
 %xstate YYINITIAL, SHORT_COMMENT, LONG_COMMENT
