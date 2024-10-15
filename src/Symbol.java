@@ -1,4 +1,4 @@
-package src;
+
 /**
  * Symbol objects represent a terminal or non-terminal symbol in the grammar.
  * 

@@ -1,4 +1,4 @@
-package src;
+
 /**
  * A terminal symbol, a.k.a. a letter in the grammar.
  */

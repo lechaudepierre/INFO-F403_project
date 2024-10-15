@@ -1,5 +1,5 @@
 %%
-%class LexicalAnalyzer
+%class LexicalAnalyzerAchten
 %unicode
 %line
 %column
