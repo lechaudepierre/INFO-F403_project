@@ -2,15 +2,17 @@
 JAVAC = javac
 JFLAGS = -Xlint
 JFLEX = jflex
+JAR = jar
 LEXER_FILE = src/LexicalAnalyzer
 MAIN_CLASS = src/Main
 SYMBOL_CLASS = src/Symbol
 LEXICALUNIT_CLASS = src/LexicalUnit
 SOURCES = $(LEXER_FILE).java $(MAIN_CLASS).java $(SYMBOL_CLASS).java $(LEXICALUNIT_CLASS).java
 INPUT_FILE = test/Euclid.gls
+OUTPUT_JAR = dist/part1.jar
 
 # Cible par défaut (compiler tout)
-all: $(LEXER_FILE).java $(MAIN_CLASS).class
+all: $(LEXER_FILE).java $(OUTPUT_JAR)
 
 # Génération du fichier LexicalAnalyzer.java à partir du fichier JFlex
 $(LEXER_FILE).java: $(LEXER_FILE).flex
@@ -20,10 +22,14 @@ $(LEXER_FILE).java: $(LEXER_FILE).flex
 $(MAIN_CLASS).class: $(SOURCES)
 	$(JAVAC) $(JFLAGS) $(SOURCES)
 
-# Exécution du programme avec un fichier txt en argument
-run: $(MAIN_CLASS).class
-	java -cp src Main $(INPUT_FILE)
+# Création du dossier dist si nécessaire et génération du fichier JAR dans ce dossier
+$(OUTPUT_JAR): $(MAIN_CLASS).class
+	$(JAR) cfe $(OUTPUT_JAR) Main -C src .
 
-# Nettoyage des fichiers générés (.class et le fichier Java généré par JFlex)
+# Exécution du programme à partir du fichier JAR avec un fichier .gls en argument
+run: $(OUTPUT_JAR)
+	java -jar $(OUTPUT_JAR) $(INPUT_FILE)
+
+# Nettoyage des fichiers générés (.class, .java et le fichier JAR)
 clean:
 	rm -f src/*.class $(LEXER_FILE).java

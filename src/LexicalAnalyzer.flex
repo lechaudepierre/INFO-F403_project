@@ -22,7 +22,6 @@ WHITESPACE = [ \t\r\n]+
         System.out.println("no closing comment token found");
         System.exit(1);
     }
-    System.out.println("finito");
     return new Symbol(LexicalUnit.EOS, yyline, yycolumn);
 %eofval}
 %%

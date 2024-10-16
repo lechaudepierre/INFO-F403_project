@@ -21,7 +21,7 @@ public class Main {
      * Print the symbol table
      */
     public static void printSymbolTable() {
-        System.out.println("\nVariables :");
+        System.out.println("\nVariables");
         for (String varName : symbolTable.keySet()) {
             System.out.println(varName + "   " + symbolTable.get(varName));
         }
