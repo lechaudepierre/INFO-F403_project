@@ -15,8 +15,9 @@
 VARNAME = [a-z][a-zA-Z0-9]*
 NUMBER = [1-9][0-9]*|0
 PROGNAME = [A-Z][a-zA-Z]*[_][a-zA-Z]*
-WHITESPACE = [ \t\r\n]+
+WHITESPACE = [ \t\r\n]+ 
 
+// check if we end the file in the Long_Comment state. if not we simply return a Symbol with LexicalUnit.EOS
 %eofval{
     if (yystate() == LONG_COMMENT) {
         System.out.println("no closing comment token found");
@@ -41,7 +42,6 @@ WHITESPACE = [ \t\r\n]+
     "REPEAT" {return new Symbol(LexicalUnit.REPEAT, yyline, yycolumn, yytext());}
     "(" {return new Symbol(LexicalUnit.LPAREN, yyline, yycolumn, yytext());}
     ")" {return new Symbol(LexicalUnit.RPAREN, yyline, yycolumn, yytext());}
-    
     ":" {return new Symbol(LexicalUnit.COLUMN, yyline, yycolumn, yytext());}
     "WHILE" {return new Symbol(LexicalUnit.WHILE, yyline, yycolumn, yytext());}
     "<" {return new Symbol(LexicalUnit.SMALLER, yyline, yycolumn, yytext());}
@@ -51,8 +51,8 @@ WHITESPACE = [ \t\r\n]+
     "}" {return new Symbol(LexicalUnit.RBRACK, yyline, yycolumn, yytext());}
     "-" {return new Symbol(LexicalUnit.MINUS, yyline, yycolumn, yytext());}
     "END" {return new Symbol(LexicalUnit.END, yyline, yycolumn, yytext());}
-    "!!" {yybegin(LONG_COMMENT);}
-    "$" {yybegin(SHORT_COMMENT);}
+    "!!" {yybegin(LONG_COMMENT);} // switch to long comment state
+    "$" {yybegin(SHORT_COMMENT);} // switch short comment state
     . {System.out.println("Illegal character: " + yytext()); System.exit(1);}
 
 
@@ -60,15 +60,15 @@ WHITESPACE = [ \t\r\n]+
 }
 // comment states
 <SHORT_COMMENT> {
-    \n {yybegin(YYINITIAL);}
-    . { } 
+    \n {yybegin(YYINITIAL);} // switch back to initial state if we encounter a newline 
+    . { } // ignore everything else
 }
 <LONG_COMMENT> {
-    "!!" {yybegin(YYINITIAL);} //
-    \n { }
-    . { }
+    "!!" {yybegin(YYINITIAL);} // switch back to initial state if we encounter a closing comment token
+    \n { } // ignore newlines
+    . { } // ignore everything else
     
 }
 
 
-// ignore everything else
+
