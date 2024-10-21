@@ -10,6 +10,10 @@ LEXICALUNIT_CLASS = src/LexicalUnit
 SOURCES = $(LEXER_FILE).java $(MAIN_CLASS).java $(SYMBOL_CLASS).java $(LEXICALUNIT_CLASS).java
 INPUT_FILE = test/Euclid.gls
 OUTPUT_JAR = dist/part1.jar
+TEST_DIR = test
+TEST_FILES := $(wildcard $(TEST_DIR)/*.gls)
+JAVA_PROGRAM = Main
+SRC_DIR = src
 
 # Cible par défaut (compiler tout)
 all: $(LEXER_FILE).java $(OUTPUT_JAR)
@@ -26,6 +30,15 @@ $(MAIN_CLASS).class: $(SOURCES)
 $(OUTPUT_JAR): $(MAIN_CLASS).class
 	$(JAR) cfe $(OUTPUT_JAR) Main -C src .
 
+
+tests: $(TEST_FILES) 
+	for test_file in $(TEST_FILES); do \
+		echo "\nTesting $$test_file\n"; \
+		echo "------------------\n"; \
+		java -cp $(SRC_DIR) $(JAVA_PROGRAM) "$$test_file"; \
+	done
+	echo "Done testing"
+
 # Exécution du programme à partir du fichier JAR avec un fichier .gls en argument
 run: $(OUTPUT_JAR)
 	java -jar $(OUTPUT_JAR) $(INPUT_FILE)
@@ -33,3 +46,4 @@ run: $(OUTPUT_JAR)
 # Nettoyage des fichiers générés (.class, .java et le fichier JAR)
 clean:
 	rm -f src/*.class $(LEXER_FILE).java
+	echo "Done cleaning"

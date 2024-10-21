@@ -1,0 +1,7 @@
+!! Euclid's algorithm !!
+
+LET IllegalCharTest  BE
+  IN(a):
+  IN(b):
+  OUT(a):
+END

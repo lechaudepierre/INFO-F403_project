@@ -11,10 +11,9 @@
 
 %xstate YYINITIAL, SHORT_COMMENT, LONG_COMMENT
 
-
+PROGNAME = [A-Z][a-zA-Z]*[_][a-zA-Z]*
 VARNAME = [a-z][a-zA-Z0-9]*
 NUMBER = [1-9][0-9]*|0
-PROGNAME = [A-Z][a-zA-Z]*[_][a-zA-Z]*
 WHITESPACE = [ \t\r\n]+ 
 
 // check if we end the file in the Long_Comment state. if not we simply return a Symbol with LexicalUnit.EOS
