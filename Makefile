@@ -10,7 +10,7 @@ LEXICALUNIT_CLASS = src/LexicalUnit
 SOURCES = $(LEXER_FILE).java $(MAIN_CLASS).java $(SYMBOL_CLASS).java $(LEXICALUNIT_CLASS).java
 INPUT_FILE = test/Euclid.gls
 OUTPUT_JAR = dist/part1.jar
-TEST_DIR = test
+TEST_DIR = test/test1
 TEST_FILES := $(wildcard $(TEST_DIR)/*.gls)
 JAVA_PROGRAM = Main
 SRC_DIR = src
@@ -30,11 +30,13 @@ $(MAIN_CLASS).class: $(SOURCES)
 $(OUTPUT_JAR): $(MAIN_CLASS).class
 	$(JAR) cfe $(OUTPUT_JAR) Main -C src .
 
+# Compilation des fichiers avant les tests
+compile: $(MAIN_CLASS).class
 
-tests: $(TEST_FILES) 
+# Exécuter les tests sur tous les fichiers .gls dans le répertoire de test
+tests: compile
 	for test_file in $(TEST_FILES); do \
 		echo "\nTesting $$test_file\n"; \
-		echo "------------------\n"; \
 		java -cp $(SRC_DIR) $(JAVA_PROGRAM) "$$test_file"; \
 	done
 	echo "Done testing"

@@ -1,0 +1,7 @@
+
+LET Illegal_Symbol BE
+  IN(#):
+  IN(A):
+  OUT(a):
+  c = 00;
+END
