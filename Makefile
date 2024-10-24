@@ -54,3 +54,8 @@ javadoc: $(SOURCES)
 clean:
 	rm -f $(SRC_DIR)/*.class $(SRC_DIR)/LexicalAnalyzer.java
 	echo "Done cleaning"
+
+# Clean up generated Javadoc
+javadoclean:
+	rm -rf $(DOC_DIR)
+	echo "Done cleaning Javadoc"
