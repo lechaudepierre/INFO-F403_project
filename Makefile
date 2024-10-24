@@ -1,51 +1,48 @@
-# Variables
+# Tools
 JAVAC = javac
-JFLAGS = -Xlint
 JFLEX = jflex
 JAR = jar
-LEXER_FILE = src/LexicalAnalyzer
-MAIN_CLASS = src/Main
-SYMBOL_CLASS = src/Symbol
-LEXICALUNIT_CLASS = src/LexicalUnit
-SOURCES = $(LEXER_FILE).java $(MAIN_CLASS).java $(SYMBOL_CLASS).java $(LEXICALUNIT_CLASS).java
+
+# Source and target files
+SRC_DIR = src
+TEST_DIR = test/test1
+SOURCES = $(SRC_DIR)/LexicalAnalyzer.java $(SRC_DIR)/Main.java $(SRC_DIR)/Symbol.java $(SRC_DIR)/LexicalUnit.java
+TEST_FILES := $(wildcard $(TEST_DIR)/*.gls)
 INPUT_FILE = test/Euclid.gls
 OUTPUT_JAR = dist/part1.jar
-TEST_DIR = test/test1
-TEST_FILES := $(wildcard $(TEST_DIR)/*.gls)
-JAVA_PROGRAM = Main
-SRC_DIR = src
+MAIN_CLASS = Main
 
-# Cible par défaut (compiler tout)
-all: $(LEXER_FILE).java $(OUTPUT_JAR)
+# Default target (compile everything)
+all: $(SRC_DIR)/LexicalAnalyzer.java $(OUTPUT_JAR)
 
-# Génération du fichier LexicalAnalyzer.java à partir du fichier JFlex
-$(LEXER_FILE).java: $(LEXER_FILE).flex
-	$(JFLEX) $(LEXER_FILE).flex
+# Generate the LexicalAnalyzer.java file from the JFlex file
+$(SRC_DIR)/LexicalAnalyzer.java: $(SRC_DIR)/LexicalAnalyzer.flex
+	$(JFLEX) $(SRC_DIR)/LexicalAnalyzer.flex
 
-# Compilation des fichiers Java
-$(MAIN_CLASS).class: $(SOURCES)
-	$(JAVAC) $(JFLAGS) $(SOURCES)
+# Compile the Java files
+$(SRC_DIR)/Main.class: $(SOURCES)
+	$(JAVAC) -Xlint $(SOURCES)
 
-# Création du dossier dist si nécessaire et génération du fichier JAR dans ce dossier
-$(OUTPUT_JAR): $(MAIN_CLASS).class
-	$(JAR) cfe $(OUTPUT_JAR) Main -C src .
+# Create the dist directory if needed and generate the JAR file in this directory
+$(OUTPUT_JAR): $(SRC_DIR)/Main.class
+	$(JAR) cfe $(OUTPUT_JAR) $(MAIN_CLASS) -C $(SRC_DIR) .
 
-# Compilation des fichiers avant les tests
-compile: $(MAIN_CLASS).class
+# Compile files before running tests
+compile: $(SRC_DIR)/Main.class
 
-# Exécuter les tests sur tous les fichiers .gls dans le répertoire de test
+# Run tests on all .gls files in the test directory
 tests: compile
 	for test_file in $(TEST_FILES); do \
 		echo "\nTesting $$test_file\n"; \
-		java -cp $(SRC_DIR) $(JAVA_PROGRAM) "$$test_file"; \
+		java -cp $(SRC_DIR) $(MAIN_CLASS) "$$test_file"; \
 	done
 	echo "Done testing"
 
-# Exécution du programme à partir du fichier JAR avec un fichier .gls en argument
+# Run the program from the JAR file with a .gls file as input
 run: $(OUTPUT_JAR)
 	java -jar $(OUTPUT_JAR) $(INPUT_FILE)
 
-# Nettoyage des fichiers générés (.class, .java et le fichier JAR)
+# Clean up generated files (.class, .java, and the JAR file)
 clean:
-	rm -f src/*.class $(LEXER_FILE).java
+	rm -f $(SRC_DIR)/*.class $(SRC_DIR)/LexicalAnalyzer.java
 	echo "Done cleaning"

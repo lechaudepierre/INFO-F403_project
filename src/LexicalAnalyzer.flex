@@ -60,7 +60,7 @@ WHITESPACE = [ \t\r\n]+
     "-" {return new Symbol(LexicalUnit.MINUS, yyline, yycolumn, yytext());}
     "!!" {yybegin(LONG_COMMENT);} // switch to long comment state
     "$" {yybegin(SHORT_COMMENT);} // switch short comment state
-    . {System.out.println("Unrecognised symbol: " + yytext());}
+    . {System.out.println("Unrecognized symbol: " + yytext());}
 
 
     
