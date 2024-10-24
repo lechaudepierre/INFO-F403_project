@@ -2,6 +2,7 @@
 JAVAC = javac
 JFLEX = jflex
 JAR = jar
+JAVADOC = javadoc
 
 # Source and target files
 SRC_DIR = src
@@ -11,6 +12,7 @@ TEST_FILES := $(wildcard $(TEST_DIR)/*.gls)
 INPUT_FILE = test/Euclid.gls
 OUTPUT_JAR = dist/part1.jar
 MAIN_CLASS = Main
+DOC_DIR = doc/javadoc
 
 # Default target (compile everything)
 all: $(SRC_DIR)/LexicalAnalyzer.java $(OUTPUT_JAR)
@@ -38,9 +40,15 @@ tests: compile
 	done
 	echo "Done testing"
 
+
+
 # Run the program from the JAR file with a .gls file as input
 run: $(OUTPUT_JAR)
 	java -jar $(OUTPUT_JAR) $(INPUT_FILE)
+
+# Generate the Javadoc
+javadoc: $(SOURCES)
+	$(JAVADOC) -d $(DOC_DIR) $(SOURCES)
 
 # Clean up generated files (.class, .java, and the JAR file)
 clean:
