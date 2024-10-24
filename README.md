@@ -20,20 +20,6 @@ To compile all the source files and generate the necessary artifacts, run:
 make all
 ```
 
-### Generate Lexical Analyzer
-
-To generate the `LexicalAnalyzer.java` file from the JFlex file, run:
-```sh
-make $(SRC_DIR)/LexicalAnalyzer.java
-```
-
-### Compile Java Files
-
-To compile the Java source files, run:
-```sh
-make $(SRC_DIR)/Main.class
-```
-
 ### Create JAR File
 
 To create the JAR file, run:
