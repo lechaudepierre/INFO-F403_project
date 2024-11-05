@@ -1,0 +1,5 @@
+src/*.class
+src/LexicalAnalyzer.java~
+test/*.out
+more/*.ll
+more/*.bc
