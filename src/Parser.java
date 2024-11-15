@@ -171,13 +171,11 @@ public class Parser {
                 leaves.add(ExprArith());
                 leaves.add(Comp());
                 leaves.add(ExprArith());
-                return new ParseTree(new Symbol(LexicalUnit.Cond, "Cond"), leaves);
             }
             case PIPE -> {
                 leaves.add(match(LexicalUnit.PIPE));
                 leaves.add(Cond());
                 leaves.add(match(LexicalUnit.PIPE));
-                return new ParseTree(new Symbol(LexicalUnit.Cond, "Cond"), leaves);
             }
             //case IF, OUTPUT, INPUT, END, ELSE, THEN, REPEAT -> {
             // Handle other cases where the token is not a condition
@@ -188,9 +186,9 @@ public class Parser {
                 leaves.add(Cond());
                 leaves.add(match(LexicalUnit.IMPLIES));
                 leaves.add(Cond());
-                return new ParseTree(new Symbol(LexicalUnit.Cond, "Cond"), leaves);
             }
         }
+        return new ParseTree(new Symbol(LexicalUnit.Cond, "Cond"), leaves);
     }
 
 
