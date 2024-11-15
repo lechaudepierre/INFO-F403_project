@@ -3,3 +3,4 @@ src/LexicalAnalyzer.java~
 test/*.out
 more/*.ll
 more/*.bc
+.vscode/settings.json
