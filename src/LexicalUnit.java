@@ -61,4 +61,23 @@ public enum LexicalUnit{
     INPUT,
     /** End Of Stream */
     EOS, // End of stream
+
+    EPSILON, // Epsilon
+
+    Program, 
+    Code, 
+    Instruction, 
+    Assign,
+    ExprArith,
+    ExprArith2,  
+    Mult, 
+    Mult2, 
+    Atom,
+    If, 
+    Cond, 
+    Comp, 
+    While, 
+    Output, 
+    Input, 
+    EndIf
 }

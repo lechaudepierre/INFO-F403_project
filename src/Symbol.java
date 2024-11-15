@@ -175,6 +175,12 @@
 		}
 		return "Non-terminal symbol: "+value;
 	}
+
+    public String toTexString(){
+        return value.toString();
+    }
+                    
+
     /**
      * Returns a string padded with spaces up to the specified length.
      * 

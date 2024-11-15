@@ -7,7 +7,7 @@ JAVADOC = javadoc
 # Source and target files
 SRC_DIR = src
 TEST_DIR = test/test1
-SOURCES = $(SRC_DIR)/LexicalAnalyzer.java $(SRC_DIR)/Main.java $(SRC_DIR)/Symbol.java $(SRC_DIR)/LexicalUnit.java
+SOURCES = $(SRC_DIR)/LexicalAnalyzer.java $(SRC_DIR)/Main.java $(SRC_DIR)/Symbol.java $(SRC_DIR)/LexicalUnit.java $(SRC_DIR)/Parser.java $(SRC_DIR)/ParseTree.java
 TEST_FILES := $(wildcard $(TEST_DIR)/*.gls)
 INPUT_FILE = test/Euclid.gls
 OUTPUT_JAR = dist/part1.jar
