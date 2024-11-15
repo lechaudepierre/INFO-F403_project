@@ -239,7 +239,7 @@ public class Parser {
                 leaves.add(Mult());
                 leaves.add(ExprArith2());
             }
-            case COLUMN, RPAREN, EQUAL, SMALEQ, SMALLER -> {
+            case COLUMN, RPAREN, EQUAL, SMALEQ, SMALLER, RBRACK -> {
                 System.out.print("13 ");
                 return new ParseTree(new Symbol(LexicalUnit.EPSILON, "$\\epsilon$"));
             }
@@ -271,7 +271,7 @@ public class Parser {
                 leaves.add(Atom());
                 leaves.add(Mult2());
             }
-            case COLUMN, PLUS, MINUS, RPAREN, EQUAL, SMALEQ, SMALLER -> {
+            case COLUMN, PLUS, MINUS, RPAREN, EQUAL, SMALEQ, SMALLER, RBRACK -> {
                 System.out.print("17 ");
                 return new ParseTree(new Symbol(LexicalUnit.EPSILON, "$\\epsilon$"));
             }
@@ -284,7 +284,7 @@ public class Parser {
         List<ParseTree> leaves = new ArrayList<>();
         switch (currentToken.getType()) {
             case MINUS -> {
-                // System.out.print("18 ");
+                System.out.print("18 ");
                 leaves.add(match(LexicalUnit.MINUS));
                 leaves.add(Atom());
             }
@@ -327,7 +327,7 @@ public class Parser {
      */
     private ParseTree match(LexicalUnit expectedToken) {
         ParseTree leaf;
-        // System.out.println("Expected : " + expectedToken + ", Actual : " + currentToken.getType());
+        //System.out.println("Expected : " + expectedToken + ", Actual : " + currentToken.getType());
         if (!currentToken.getType().equals(expectedToken)) {
             throw new RuntimeException("\nParsing Error, Expected : " + expectedToken + ", Actual : " + currentToken.getType());
         } else {
