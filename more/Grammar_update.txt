@@ -1,33 +1,38 @@
-[1] <Program>           →LET [ProgName] BE <Code> END
-[2] <Code>              →<Instruction> : <Code>
-[3]                     →ε
-[4] <Instruction>       →<Assign>
-[5]                     →<If>
-[6]                     →<While>
-[7]                     →<Call>
-[8]                     →<Output>
-[9]                     →<Input>
-[10] <Assign>           →[VarName] = <ExprArith>
-[11] <ExprArith>        →<Mult><ExprArith'>
-[00] <Mult>             → <Atom><Mult'>
-[00] <Mult'>            → *<Mult>
-[00]                    → /<Mult>
-[00]                    → ε
-[16] <ExprArith'>       → +<ExprArith>
-[00]                    → -<ExprArith>
-[00]                    → ε
-[00] <Atom>             → -<Atom>
-[00]                    → [VarName]
-[00]                    → [NUMBER]
-[00]                    → (<ExprArith>)
-[20] <If>               → IF { <Cond> } THEN <Code> END
-[21]                    → IF { <Cond> } THEN <Code> ELSE <Code> END
-[22] <Cond>             → <Cond> -> <Cond>
-[23]                    → |<Cond>|
-[24]                    → <ExprArith> <Comp> <ExprArith>
-[25] <Comp>             →==
-[26]                    →<=
-[27]                    →<
-[28] <While>            →WHILE {<Cond>} REPEAT <Code> END
-[29] <Output>           →OUT([VarName])
-[30] <Input>            →IN([VarName])
+[1] <Program>           → LET [ProgName] BE <Code> END
+[2] <Code>              → <Instruction> : <Code>
+[3]                     → ε
+[4] <Instruction>       → <Assign>
+[5]                     → <If>
+[6]                     → <While>
+[7]                     → <Output>
+[8]                     → <Input>
+[9] <Assign>            → [VarName] = <ExprArith>
+[10] <ExprArith>        → <Prod><ExprArith'>
+[11] <Prod>             → <Atom><Prod'>
+[12] <prod'>            → *<Prod>
+[13]                    → /<Prod>
+[14]                    → ε
+[15] <ExprArith'>       → +<ExprArith>
+[16]                    → -<ExprArith>
+[17]                    → ε
+[18] <Atom>             → -<Atom>
+[19]                    → [VarName]
+[20]                    → [NUMBER]
+[21]                    → (<ExprArith>)
+[22] <If>               → IF { <Cond> } THEN <Code> <EndIf>
+[23] <EndIf>            → ELSE <Code> END
+[24]                    → END
+[25] <Cond>             → <CondOr> <CondImpl>
+[26] <CondImpl>         → -> <CondOr> <CondImpl>
+[27]                    → ε
+[28] <CondOr>           → <CondAtom> <CondOr'>
+[29] <CondOr'>          → |<CondAtom>| <CondOr'>
+[30]                    → ε
+[31] <CondAtom>         → <ExprArith> <Comp> <ExprArith> 
+[32]                    → (<Cond>)
+[33] <Comp>             → ==
+[34]                    → <=
+[35]                    → <
+[36] <While>            → WHILE {<Cond>} REPEAT <Code> END
+[37] <Output>           → OUT([VarName])
+[38] <Input>            → IN([VarName])
