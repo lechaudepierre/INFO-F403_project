@@ -130,7 +130,7 @@ public class Parser {
     }
 
     private ParseTree While() {
-        System.out.print("36 ");
+        System.out.print("35 ");
         List<ParseTree> leaves = new ArrayList<>();
         leaves.add(match(LexicalUnit.WHILE));
         leaves.add(match(LexicalUnit.LBRACK));
@@ -143,7 +143,7 @@ public class Parser {
     }
 
     private ParseTree Output() {
-        System.out.print("37 ");
+        System.out.print("36 ");
         List<ParseTree> leaves = new ArrayList<>();
         leaves.add(match(LexicalUnit.OUTPUT));
         leaves.add(match(LexicalUnit.LPAREN));
@@ -153,7 +153,7 @@ public class Parser {
     }
 
     private ParseTree Input() {
-        System.out.print("38 ");
+        System.out.print("37 ");
         List<ParseTree> leaves = new ArrayList<>();
         leaves.add(match(LexicalUnit.INPUT));
         leaves.add(match(LexicalUnit.LPAREN));
@@ -219,19 +219,12 @@ public class Parser {
     private ParseTree CondAtom() {
         List<ParseTree> leaves = new ArrayList<>();
         switch (currentToken.getType()) {
-            case VARNAME, NUMBER, MINUS -> {
+            case VARNAME, NUMBER, MINUS, LPAREN -> {
                 System.out.print("31 ");
                 leaves.add(ExprArith());
                 leaves.add(Comp());
                 leaves.add(ExprArith());
             }
-            case LPAREN -> {
-                System.out.print("32 ");
-                leaves.add(match(LexicalUnit.LPAREN));
-                leaves.add(Cond());
-                leaves.add(match(LexicalUnit.RPAREN));
-            }
-        
             default -> throw new RuntimeException("\nParsing Error, Unexpected token : " + currentToken.getType() + " at line " + currentToken.getLine());
         }
         return new ParseTree(new Symbol(LexicalUnit.CondAtom, "CondAtom"), leaves);
@@ -244,15 +237,15 @@ public class Parser {
         List<ParseTree> leaves = new ArrayList<>();
         switch (currentToken.getType()) {
             case EQUAL -> {
-                System.out.print("33 ");
+                System.out.print("32 ");
                 leaves.add(match(LexicalUnit.EQUAL));
             }
             case SMALEQ -> {
-                System.out.print("34 ");
+                System.out.print("33 ");
                 leaves.add(match(LexicalUnit.SMALEQ));
             }
             case SMALLER -> {
-                System.out.print("35 ");
+                System.out.print("34 ");
                 leaves.add(match(LexicalUnit.SMALLER));
             }
             default -> throw new RuntimeException("\nParsing Error, Unexpected token : " + currentToken.getType() + " at line " + currentToken.getLine());

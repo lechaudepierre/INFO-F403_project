@@ -29,10 +29,9 @@
 [29] <CondOr'>          → |<CondAtom>| <CondOr'>
 [30]                    → ε
 [31] <CondAtom>         → <ExprArith> <Comp> <ExprArith> 
-[32]                    → (<Cond>)
-[33] <Comp>             → ==
-[34]                    → <=
-[35]                    → <
-[36] <While>            → WHILE {<Cond>} REPEAT <Code> END
-[37] <Output>           → OUT([VarName])
-[38] <Input>            → IN([VarName])
+[32] <Comp>             → ==
+[33]                    → <=
+[34]                    → <
+[35] <While>            → WHILE {<Cond>} REPEAT <Code> END
+[36] <Output>           → OUT([VarName])
+[37] <Input>            → IN([VarName])
