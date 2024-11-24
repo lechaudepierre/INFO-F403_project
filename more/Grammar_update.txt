@@ -23,15 +23,13 @@
 [23] <EndIf>            → ELSE <Code> END
 [24]                    → END
 [25] <Cond>             → <CondOr> <CondImpl>
-[26] <CondImpl>         → -> <CondOr> <CondImpl>
+[26] <CondImpl>         → -> <CondAtom> <CondImpl>
 [27]                    → ε
-[28] <CondOr>           → <CondAtom> <CondOr'>
-[29] <CondOr'>          → |<CondAtom>| <CondOr'>
-[30]                    → ε
-[31] <CondAtom>         → <ExprArith> <Comp> <ExprArith> 
-[32] <Comp>             → ==
-[33]                    → <=
-[34]                    → <
-[35] <While>            → WHILE {<Cond>} REPEAT <Code> END
-[36] <Output>           → OUT([VarName])
-[37] <Input>            → IN([VarName])
+[28] <CondAtom>         → <ExprArith> <Comp> <ExprArith> 
+[29]                    → |<Cond>|
+[30] <Comp>             → ==
+[31]                    → <=
+[32]                    → <
+[33] <While>            → WHILE {<Cond>} REPEAT <Code> END
+[34] <Output>           → OUT([VarName])
+[35] <Input>            → IN([VarName])
