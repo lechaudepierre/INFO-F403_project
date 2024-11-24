@@ -168,12 +168,17 @@
      */
 	@Override
 	public String toString(){
+        
         final String value	= this.value != null? this.value.toString() : "null";
 		if(this.isTerminal()){
 			final String type		= this.type  != null? this.type.toString()  : "null";
-			return "token: "+padTo(value,12)+"\tlexical unit: "+type; // The longest keyword has length 7
+            System.out.println(type);
+            
+			return type; // The longest keyword has length 7
 		}
-		return "Non-terminal symbol: "+value;
+        System.out.println(value);
+        
+		return value;
 	}
 
     public String toTexString(){

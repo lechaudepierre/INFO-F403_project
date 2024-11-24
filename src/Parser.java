@@ -213,7 +213,7 @@ public class Parser {
             }
             default -> throw new RuntimeException("\nParsing Error, Unexpected token : " + currentToken.getType() + " at line " + currentToken.getLine());
         }
-        return new ParseTree(new Symbol(LexicalUnit.Prod2, "Product"), leaves);
+        return new ParseTree(new Symbol(LexicalUnit.CondOr2, "CondOrPrime"), leaves);
     }
 
     private ParseTree CondAtom() {
@@ -282,7 +282,7 @@ public class Parser {
             }
             default -> throw new RuntimeException("\nParsing Error, Unexpected token : " + currentToken.getType() + " at line " + currentToken.getLine());
         }
-        return new ParseTree(new Symbol(LexicalUnit.ExprArith2, "ExprArith"), leaves);
+        return new ParseTree(new Symbol(LexicalUnit.ExprArith2, "ExprArithPrime"), leaves);
     }
 
     private ParseTree Prod() {
@@ -314,7 +314,7 @@ public class Parser {
             }
             default -> throw new RuntimeException("\nParsing Error, Unexpected token : " + currentToken.getType() + " at line " + currentToken.getLine());
         }
-        return new ParseTree(new Symbol(LexicalUnit.Prod2, "Product"), leaves);
+        return new ParseTree(new Symbol(LexicalUnit.Prod2, "ProductPrime"), leaves);
     }
 
     private ParseTree Atom() {
@@ -342,6 +342,7 @@ public class Parser {
             default -> throw new RuntimeException("\nParsing Error, Unexpected token : " + currentToken.getType() + " at line " + currentToken.getLine());
         }
         return new ParseTree(new Symbol(LexicalUnit.Atom, "Atom"), leaves);
+
     }
 
     /**
@@ -369,6 +370,7 @@ public class Parser {
             throw new RuntimeException("\nParsing Error, Expected : " + expectedToken + ", Actual : " + currentToken.getType());
         } else {
             leaf = new ParseTree(currentToken);
+            
             nextToken();
 
             // Add the token to the variable table if it is a variable

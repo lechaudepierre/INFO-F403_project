@@ -38,8 +38,6 @@ public class Main {
         boolean requiresOutput = false;
         if (args.length == 1){
             inputPath = args[0];
-            System.out.println("Usage: java Main <input_file>");
-            System.exit(1);
         } else if (args.length == 3){
             if (Objects.equals(args[0], "-wt")) {
                 requiresOutput = true;
@@ -65,6 +63,7 @@ public class Main {
             }*/
             //printSymbolTable(); //print the symbol table
             // Retrieve the variable table
+            
             variableTable = parser.getVariableTable();
             if (requiresOutput) {
                 // Write the parse tree in the LaTeX file
