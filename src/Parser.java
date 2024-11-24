@@ -167,7 +167,7 @@ public class Parser {
      * @return the ParseTree node for the `While` grammar rule.
      */
     private ParseTree While() {
-        System.out.print("35 ");
+        System.out.print("33 ");
         List<ParseTree> leaves = new ArrayList<>();
         leaves.add(match(LexicalUnit.WHILE));
         leaves.add(match(LexicalUnit.LBRACK));
@@ -185,7 +185,7 @@ public class Parser {
      * @return the ParseTree node for the `Output` grammar rule.
      */
     private ParseTree Output() {
-        System.out.print("36 ");
+        System.out.print("34 ");
         List<ParseTree> leaves = new ArrayList<>();
         leaves.add(match(LexicalUnit.OUTPUT));
         leaves.add(match(LexicalUnit.LPAREN));
@@ -200,7 +200,7 @@ public class Parser {
      * @return the ParseTree node for the `Input` grammar rule.
      */
     private ParseTree Input() {
-        System.out.print("37 ");
+        System.out.print("35 ");
         List<ParseTree> leaves = new ArrayList<>();
         leaves.add(match(LexicalUnit.INPUT));
         leaves.add(match(LexicalUnit.LPAREN));
@@ -217,7 +217,7 @@ public class Parser {
     private ParseTree Cond() {
         System.out.print("25 ");
         List<ParseTree> leaves = new ArrayList<>();
-        leaves.add(CondOr());
+        leaves.add(CondAtom());
         leaves.add(CondImpl());
         return new ParseTree(new Symbol(LexicalUnit.Cond, "Cond"), leaves);
     }
@@ -233,7 +233,7 @@ public class Parser {
             case IMPLIES -> {
                 System.out.print("26 ");
                 leaves.add(match(LexicalUnit.IMPLIES));
-                leaves.add(CondOr());
+                leaves.add(CondAtom());
                 leaves.add(CondImpl());
             }
             case RPAREN, RBRACK -> {
@@ -245,37 +245,8 @@ public class Parser {
         return new ParseTree(new Symbol(LexicalUnit.CondImpl, "CondImpl"), leaves);
     }
 
-    
-    private ParseTree CondOr() {
-        System.out.print("28 ");
-        List<ParseTree> leaves = new ArrayList<>();
-        leaves.add(CondAtom());
-        leaves.add(CondOr2());
-        return new ParseTree(new Symbol(LexicalUnit.CondOr, "CondOr"), leaves);
-    }
-
-    private ParseTree CondOr2() {
-        List<ParseTree> leaves = new ArrayList<>();
-        switch (currentToken.getType()) {
-            case PIPE -> {
-                System.out.print("29 ");
-                leaves.add(match(LexicalUnit.PIPE));
-                leaves.add(CondAtom());
-                leaves.add(CondOr2());
-                leaves.add(match(LexicalUnit.PIPE));
-            }
-        
-            case RPAREN, RBRACK -> {
-                System.out.print("30 ");
-                return new ParseTree(new Symbol(LexicalUnit.EPSILON, "$\\epsilon$"));
-            }
-            default -> throw new RuntimeException("\nParsing Error, Unexpected token : " + currentToken.getType() + " at line " + currentToken.getLine());
-        }
-        return new ParseTree(new Symbol(LexicalUnit.CondOr2, "CondOrPrime"), leaves);
-    }
-
     /**
-     * Parses a single atomic condition or logical operation.
+     * Parses a condition or logical operation.
      *
      * @return the ParseTree node for the `CondAtom` grammar rule.
      */
@@ -283,10 +254,16 @@ public class Parser {
         List<ParseTree> leaves = new ArrayList<>();
         switch (currentToken.getType()) {
             case VARNAME, NUMBER, MINUS, LPAREN -> {
-                System.out.print("31 ");
+                System.out.print("28 ");
                 leaves.add(ExprArith());
                 leaves.add(Comp());
                 leaves.add(ExprArith());
+            }
+            case PIPE -> {
+                System.out.print("29 ");
+                leaves.add(match(LexicalUnit.PIPE));
+                leaves.add(Cond());
+                leaves.add(match(LexicalUnit.PIPE));
             }
             default -> throw new RuntimeException("\nParsing Error, Unexpected token : " + currentToken.getType() + " at line " + currentToken.getLine());
         }
@@ -304,15 +281,15 @@ public class Parser {
         List<ParseTree> leaves = new ArrayList<>();
         switch (currentToken.getType()) {
             case EQUAL -> {
-                System.out.print("32 ");
+                System.out.print("30 ");
                 leaves.add(match(LexicalUnit.EQUAL));
             }
             case SMALEQ -> {
-                System.out.print("33 ");
+                System.out.print("31 ");
                 leaves.add(match(LexicalUnit.SMALEQ));
             }
             case SMALLER -> {
-                System.out.print("34 ");
+                System.out.print("32 ");
                 leaves.add(match(LexicalUnit.SMALLER));
             }
             default -> throw new RuntimeException("\nParsing Error, Unexpected token : " + currentToken.getType() + " at line " + currentToken.getLine());

@@ -78,8 +78,6 @@ public enum LexicalUnit{
     If, 
     Cond, 
     CondImpl,
-    CondOr,
-    CondOr2,
     CondAtom,
     Comp, 
     While, 
