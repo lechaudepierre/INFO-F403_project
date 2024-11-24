@@ -1,6 +1,7 @@
 
 /**
  * A terminal symbol, a.k.a. a letter in the grammar.
+ * Also contains the grammatical rules
  */
 public enum LexicalUnit{
     /** [ProgName] */
@@ -62,6 +63,7 @@ public enum LexicalUnit{
     /** End Of Stream */
     EOS, // End of stream
 
+    /** End of grammar rule */
     EPSILON, // Epsilon
 
     Program, 

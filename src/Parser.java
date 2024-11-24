@@ -1,33 +1,43 @@
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.TreeMap;
 
-import javax.swing.plaf.ColorUIResource;
+
+/**
+ * This class implements a recursive-descent parser for a custom programming language.
+ * It relies on a lexical analyzer to tokenize the input and builds a parse tree for
+ * the program's syntax.
+ */
 
 public class Parser {
     private final LexicalAnalyzer lexer;
     private Symbol currentToken;
     
-
+    /**
+     * Constructs a Parser with the specified lexical analyzer.
+     *
+     * @param lexer the lexical analyzer providing the tokens for parsing.
+     */
     public Parser(LexicalAnalyzer lexer){
         this.lexer = lexer;
     }
 
 
     /**
-     * Calls the first function of the recursive parser
+     * Starts parsing from the root of the grammar and returns the resulting parse tree.
      *
-     * @return the ParseTree corresponding to the parsing of the language read by the lexical analyser given when
-     * parser was created.
+     * @return the ParseTree representing the program structure.
      */
     public ParseTree startParsing() {
         nextToken();
         return Program();
     }
 
+    /**
+     * Parses the program structure, starting with the main `LET` and ending with `END`.
+     *
+     * @return the ParseTree node representing the program.
+     */
     private ParseTree Program() {
         System.out.print("1 ");
         List<ParseTree> leaves = new ArrayList<>();
@@ -40,6 +50,11 @@ public class Parser {
         return new ParseTree(new Symbol(LexicalUnit.Program, "Program"), leaves);
     }
 
+    /**
+     * Parses the sequence of statements or returns an epsilon node if none are present.
+     *
+     * @return the ParseTree node for the `Code` grammar rule.
+     */
     private ParseTree Code() {
         List<ParseTree> leaves = new ArrayList<>();
         switch (currentToken.getType()) {
@@ -58,6 +73,11 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses a single instruction based on its starting token (e.g., IF, WHILE).
+     *
+     * @return the ParseTree node for the `Instruction` grammar rule.
+     */
     private ParseTree Instruction() {
         List<ParseTree> leaves = new ArrayList<>();
         switch (currentToken.getType()) {
@@ -86,6 +106,11 @@ public class Parser {
         return new ParseTree(new Symbol(LexicalUnit.Instruction, "Instruction"), leaves);
     }
 
+    /**
+     * Parses an assignment statement.
+     *
+     * @return the ParseTree node for the `Assign` grammar rule.
+     */
     private ParseTree Assign() {
         System.out.print("9 ");
         List<ParseTree> leaves = new ArrayList<>();
@@ -95,6 +120,11 @@ public class Parser {
         return new ParseTree(new Symbol(LexicalUnit.Assign, "Assign"), leaves);
     }
 
+    /**
+     * Parses an if-then-else conditional statement.
+     *
+     * @return the ParseTree node for the `If` grammar rule.
+     */
     private ParseTree If() {
         System.out.print("22 ");
         List<ParseTree> leaves = new ArrayList<>();
@@ -108,6 +138,11 @@ public class Parser {
         return new ParseTree(new Symbol(LexicalUnit.If, "If"), leaves);
     }
 
+    /**
+     * Parses the `else` part of an if-then-else statement, if present.
+     *
+     * @return the ParseTree node for the `EndIf` grammar rule.
+     */
     private ParseTree EndIf() {
         List<ParseTree> leaves = new ArrayList<>();
         switch (currentToken.getType()) {
@@ -126,6 +161,11 @@ public class Parser {
         return new ParseTree(new Symbol(LexicalUnit.EndIf, "EndIf"), leaves);
     }
 
+    /**
+     * Parses a while loop.
+     *
+     * @return the ParseTree node for the `While` grammar rule.
+     */
     private ParseTree While() {
         System.out.print("35 ");
         List<ParseTree> leaves = new ArrayList<>();
@@ -139,6 +179,11 @@ public class Parser {
         return new ParseTree(new Symbol(LexicalUnit.While, "While"), leaves);
     }
 
+    /**
+     * Parses an output statement.
+     *
+     * @return the ParseTree node for the `Output` grammar rule.
+     */
     private ParseTree Output() {
         System.out.print("36 ");
         List<ParseTree> leaves = new ArrayList<>();
@@ -149,6 +194,11 @@ public class Parser {
         return new ParseTree(new Symbol(LexicalUnit.Output, "Output"), leaves);
     }
 
+    /**
+     * Parses an input statement.
+     *
+     * @return the ParseTree node for the `Input` grammar rule.
+     */
     private ParseTree Input() {
         System.out.print("37 ");
         List<ParseTree> leaves = new ArrayList<>();
@@ -159,6 +209,11 @@ public class Parser {
         return new ParseTree(new Symbol(LexicalUnit.Input, "Input"), leaves);
     }
 
+    /**
+     * Parses a condition or logical expression.
+     *
+     * @return the ParseTree node for the `Cond` grammar rule.
+     */
     private ParseTree Cond() {
         System.out.print("25 ");
         List<ParseTree> leaves = new ArrayList<>();
@@ -167,6 +222,11 @@ public class Parser {
         return new ParseTree(new Symbol(LexicalUnit.Cond, "Cond"), leaves);
     }
 
+    /**
+     * Parses the implication part of a logical expression.
+     *
+     * @return the ParseTree node for the `CondImpl` grammar rule.
+     */
     private ParseTree CondImpl() {
         List<ParseTree> leaves = new ArrayList<>();
         switch (currentToken.getType()) {
@@ -185,6 +245,7 @@ public class Parser {
         return new ParseTree(new Symbol(LexicalUnit.CondImpl, "CondImpl"), leaves);
     }
 
+    
     private ParseTree CondOr() {
         System.out.print("28 ");
         List<ParseTree> leaves = new ArrayList<>();
@@ -213,6 +274,11 @@ public class Parser {
         return new ParseTree(new Symbol(LexicalUnit.CondOr2, "CondOrPrime"), leaves);
     }
 
+    /**
+     * Parses a single atomic condition or logical operation.
+     *
+     * @return the ParseTree node for the `CondAtom` grammar rule.
+     */
     private ParseTree CondAtom() {
         List<ParseTree> leaves = new ArrayList<>();
         switch (currentToken.getType()) {
@@ -229,7 +295,11 @@ public class Parser {
 
 
 
-
+    /**
+     * Parses an mathematic comparator.
+     *
+     * @return the ParseTree node for the `Comp` grammar rule.
+     */
     private ParseTree Comp() {
         List<ParseTree> leaves = new ArrayList<>();
         switch (currentToken.getType()) {
@@ -250,6 +320,11 @@ public class Parser {
         return new ParseTree(new Symbol(LexicalUnit.Comp, "Comparator"), leaves);
     }
 
+    /**
+     * Parses an arithmetic expression.
+     *
+     * @return the ParseTree node for the `ExprArith` grammar rule.
+     */
     private ParseTree ExprArith() {
         System.out.print("10 ");
         List<ParseTree> leaves = new ArrayList<>();
@@ -258,6 +333,11 @@ public class Parser {
         return new ParseTree(new Symbol(LexicalUnit.ExprArith, "ExprArith"), leaves);
     }
 
+    /**
+     * Parses an addition, a substraction or nothing.
+     *
+     * @return the ParseTree node for the `ExprArith2` grammar rule.
+     */
     private ParseTree ExprArith2() {
         List<ParseTree> leaves = new ArrayList<>();
         switch (currentToken.getType()) {
@@ -282,6 +362,11 @@ public class Parser {
         return new ParseTree(new Symbol(LexicalUnit.ExprArith2, "ExprArithPrime"), leaves);
     }
 
+    /**
+     * Parses a product term in an arithmetic expression.
+     *
+     * @return the ParseTree node for the `Prod` grammar rule.
+     */
     private ParseTree Prod() {
         System.out.print("11 ");
         List<ParseTree> leaves = new ArrayList<>();
@@ -290,6 +375,11 @@ public class Parser {
         return new ParseTree(new Symbol(LexicalUnit.Prod, "Product"), leaves);
     }
 
+    /**
+     * Parses a multiplication, a division or nothing.
+     *
+     * @return the ParseTree node for the `Prod2` grammar rule.
+     */
     private ParseTree Prod2() {
         List<ParseTree> leaves = new ArrayList<>();
         switch (currentToken.getType()) {
@@ -314,6 +404,11 @@ public class Parser {
         return new ParseTree(new Symbol(LexicalUnit.Prod2, "ProductPrime"), leaves);
     }
 
+    /**
+     * Parses an atomic operand in an arithmetic expression.
+     *
+     * @return the ParseTree node for the `Atom` grammar rule.
+     */
     private ParseTree Atom() {
         List<ParseTree> leaves = new ArrayList<>();
         switch (currentToken.getType()) {
@@ -355,10 +450,11 @@ public class Parser {
     }
 
     /**
-     * Checks if the look-ahead correspond to the symbol that should be on the stack while reducing a grammar rule
+     * Matches the current token against an expected token type and advances to the next token.
      *
-     * @param expectedToken : token expected as look-ahead in this configuration of the parser
-     * @return ParseTree node corresponding to the symbol that was matched
+     * @param expectedToken the type of token expected.
+     * @return a ParseTree leaf node containing the matched token.
+     * @throws RuntimeException if the current token does not match the expected type.
      */
     private ParseTree match(LexicalUnit expectedToken) {
         ParseTree leaf;

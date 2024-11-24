@@ -1,4 +1,4 @@
-# INFO-F403_project_part1 
+# INFO-F403_project_part2
 # Project Build and Run Instructions
 
 This project uses a Makefile to manage the build, test, and run processes. Below are the instructions for various tasks you can perform using the Makefile.
@@ -29,7 +29,7 @@ make $(OUTPUT_JAR)
 
 ### Run Tests
 
-To compile the files and run tests on all `.gls` files in the test directory, run:
+To compile the files and run tests on all `.gls` files in the testpart2 directory, run:
 ```sh
 make tests
 ```
@@ -39,6 +39,10 @@ make tests
 To run the program from the JAR file with a specified `.gls` input file, run:
 ```sh
 make run
+```
+To run the program from the JAR file with a specified `.gls` input file and a specified `.tex` output file, run:
+```sh
+make latex
 ```
 
 ### Generate Javadoc
@@ -50,11 +54,14 @@ make javadoc
 
 ### Clean Up
 
-To clean up generated files (`.class`, `.java`, and the JAR file), run:
+To clean up generated files (`.class`), run:
 ```sh
 make clean
 ```
-
+To clean up generated java file, run:
+```sh
+make javaclean
+```
 To clean up generated Javadoc, run:
 ```sh
 make javadoclean
@@ -65,7 +72,7 @@ make javadoclean
 - `src`: Contains the source files.
 - `test/test1`: Contains the test files.
 - `dist`: Directory where the JAR file will be generated.
-- `doc/javadoc`: Directory where the Javadoc will be generated.
+- `doc/javadocpart2`: Directory where the Javadoc will be generated.
 
 ## Example Usage
 
