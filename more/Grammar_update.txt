@@ -22,7 +22,7 @@
 [22] <If>               → IF { <Cond> } THEN <Code> <EndIf>
 [23] <EndIf>            → ELSE <Code> END
 [24]                    → END
-[25] <Cond>             → <CondOr> <CondImpl>
+[25] <Cond>             → <CondAtom> <CondImpl>
 [26] <CondImpl>         → -> <CondAtom> <CondImpl>
 [27]                    → ε
 [28] <CondAtom>         → <ExprArith> <Comp> <ExprArith> 
