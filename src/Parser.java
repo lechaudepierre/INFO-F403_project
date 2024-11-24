@@ -458,10 +458,10 @@ public class Parser {
      */
     private ParseTree match(LexicalUnit expectedToken) {
         ParseTree leaf;
-        //System.out.println("Expected : " + expectedToken + ", Actual : " + currentToken.getType());
         if (!currentToken.getType().equals(expectedToken)) {
             throw new RuntimeException("\nParsing Error, Expected : " + expectedToken + ", Actual : " + currentToken.getType());
         } else {
+            
             leaf = new ParseTree(currentToken);
             nextToken();
         }

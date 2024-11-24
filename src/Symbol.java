@@ -173,7 +173,7 @@
 		if(this.isTerminal()){
 			final String type		= this.type  != null? this.type.toString()  : "null";
             
-			return type; // return type
+			return type; // return
 		}
         
         
