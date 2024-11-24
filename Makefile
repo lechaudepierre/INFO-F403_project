@@ -10,6 +10,7 @@ TEST_DIR = test/test1
 SOURCES = $(SRC_DIR)/LexicalAnalyzer.java $(SRC_DIR)/Main.java $(SRC_DIR)/Symbol.java $(SRC_DIR)/LexicalUnit.java $(SRC_DIR)/Parser.java $(SRC_DIR)/ParseTree.java
 TEST_FILES := $(wildcard $(TEST_DIR)/*.gls)
 INPUT_FILE = test/Euclid.gls
+TEX_FILE = more/output.tex
 OUTPUT_JAR = dist/part2.jar
 MAIN_CLASS = Main
 DOC_DIR = doc/javadoc
@@ -45,16 +46,20 @@ tests: compile
 # Run the program from the JAR file with a .gls file as input
 run: $(OUTPUT_JAR)
 	java -jar $(OUTPUT_JAR) $(INPUT_FILE)
-
+latex : $(OUTPUT_JAR)
+	java -jar $(OUTPUT_JAR) -wt $(TEX_FILE) $(INPUT_FILE)
 # Generate the Javadoc
 javadoc: $(SOURCES)
 	$(JAVADOC) -d $(DOC_DIR) $(SOURCES)
 
-# Clean up generated files (.class, .java, and the JAR file)
+# Clean up generated files (.class)
 clean:
-	rm -f $(SRC_DIR)/*.class $(SRC_DIR)/LexicalAnalyzer.java
+	rm -f $(SRC_DIR)/*.class 
 	echo "Done cleaning"
-
+# Clean up LexicalAnalyzer.java file
+javaclean:
+	rm -f $(SRC_DIR)/LexicalAnalyzer.java
+	echo "Done cleaning"
 # Clean up generated Javadoc
 javadoclean:
 	rm -rf $(DOC_DIR)

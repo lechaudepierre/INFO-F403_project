@@ -16,6 +16,8 @@ VARNAME = [a-z][a-zA-Z0-9]*
 NUMBER = [1-9][0-9]*|0
 WHITESPACE = [ \t\r\n]+ 
 
+BADNAME = [A-Z]
+
 // check if we end the file in the Long_Comment state. if not we simply return a Symbol with LexicalUnit.EOS
 %eofval{
     if (yystate() == LONG_COMMENT) {

@@ -49,7 +49,7 @@ public class Main {
             throw new IllegalArgumentException("Wrong arguments");
         }
 
-        TreeMap<String, Symbol> variableTable = new TreeMap<>();
+        
 
         try{
             Parser parser = new Parser(new LexicalAnalyzer(new FileReader(inputPath)));
@@ -64,7 +64,6 @@ public class Main {
             //printSymbolTable(); //print the symbol table
             // Retrieve the variable table
             
-            variableTable = parser.getVariableTable();
             if (requiresOutput) {
                 // Write the parse tree in the LaTeX file
                 FileWriter fileWriter = new FileWriter(outputPath);
@@ -77,14 +76,5 @@ public class Main {
             System.out.println("Error while opening file: "+args[0]);
             System.exit(1);
         }
-
-        if (!variableTable.isEmpty()) {
-            System.out.println("\nVariables");
-
-            for (Map.Entry<String, Symbol> variable : variableTable.entrySet()) {
-                System.out.println(variable.getKey() + "\t" + variable.getValue().getLine());
-            }
-        }
-    
     }
 }

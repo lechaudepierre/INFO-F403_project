@@ -172,11 +172,10 @@
         final String value	= this.value != null? this.value.toString() : "null";
 		if(this.isTerminal()){
 			final String type		= this.type  != null? this.type.toString()  : "null";
-            System.out.println(type);
             
-			return type; // The longest keyword has length 7
+			return type; // return type
 		}
-        System.out.println(value);
+        
         
 		return value;
 	}

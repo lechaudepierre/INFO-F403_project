@@ -10,15 +10,12 @@ import javax.swing.plaf.ColorUIResource;
 public class Parser {
     private final LexicalAnalyzer lexer;
     private Symbol currentToken;
-    private TreeMap<String, Symbol> variableTable = new TreeMap<>();
+    
 
     public Parser(LexicalAnalyzer lexer){
         this.lexer = lexer;
     }
 
-    public TreeMap<String, Symbol> getVariableTable() {
-        return variableTable;
-    }
 
     /**
      * Calls the first function of the recursive parser
@@ -370,18 +367,7 @@ public class Parser {
             throw new RuntimeException("\nParsing Error, Expected : " + expectedToken + ", Actual : " + currentToken.getType());
         } else {
             leaf = new ParseTree(currentToken);
-            
             nextToken();
-
-            // Add the token to the variable table if it is a variable
-            if (currentToken != null) {
-                if (currentToken.getType().equals(LexicalUnit.VARNAME)) {
-                    if (!variableTable.containsKey(currentToken.getValue().toString())) {
-                        variableTable.put(currentToken.getValue().toString(), currentToken);
-                    }
-                }
-            }
-
         }
         return leaf;
     }
