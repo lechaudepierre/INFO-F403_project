@@ -30,9 +30,9 @@ public class AST_tree {
                 parseTree = castParseTreeToAST(parseTree.getChildren().get(0), null);
             }
             case Assign -> {
-                children.add(parseTree.getChildren().get(0));
-                children.add(castParseTreeToAST(parseTree.getChildren().get(2), null));
-                parseTree = parseTree.getChildren().get(1);
+                children.add(parseTree.getChildren().get(0)); // VARNAME
+                children.add(castParseTreeToAST(parseTree.getChildren().get(2), null)); // <ExprArith>
+                parseTree = parseTree.getChildren().get(1); // "="
                 parseTree.setChildren(children);
             }
             case ExprArith, Prod -> {
@@ -80,18 +80,37 @@ public class AST_tree {
             case Cond -> {
                 if (parseTree.getChildren().get(1).getLabel().getType() == LexicalUnit.EPSILON) {
                     parseTree = castParseTreeToAST(parseTree.getChildren().get(0), null);
-                } else {
-                    context = castParseTreeToAST(parseTree.getChildren().get(0), null);
-                    parseTree = castParseTreeToAST(parseTree.getChildren().get(1), context);
                 }
-            }
-
-            case CondAtom -> {
-                children.add(castParseTreeToAST(parseTree.getChildren().get(0), null));
-                children.add(castParseTreeToAST(parseTree.getChildren().get(2), null));
-                parseTree = castParseTreeToAST(parseTree.getChildren().get(1), null);
+                else {
+                    children.add(castParseTreeToAST(parseTree.getChildren().get(0), null)); // <CondAtom>
+                    children.add(castParseTreeToAST(parseTree.getChildren().get(1), null)); // <CondImpl>
+                    
+                }
                 parseTree.setChildren(children);
             }
+            case CondImpl -> {
+                
+                children.add(castParseTreeToAST(parseTree.getChildren().get(1), null)); // <CondAtom>
+                children.add(castParseTreeToAST(parseTree.getChildren().get(2), null)); // <CondImpl>
+                parseTree = parseTree.getChildren().get(0);
+                parseTree.setChildren(children);
+            }
+
+
+            case CondAtom -> {
+                if (parseTree.getChildren().get(0).getLabel().getType() == LexicalUnit.PIPE &&
+                parseTree.getChildren().get(2).getLabel().getType() == LexicalUnit.PIPE) {
+                    // |<Cond>|
+                    children.add(castParseTreeToAST(parseTree.getChildren().get(1), null)); // <Cond>
+                    
+                } else {
+                    // <ExprArith> <Comp> <ExprArith>
+                    children.add(castParseTreeToAST(parseTree.getChildren().get(0), null)); // <ExprArith>
+                    children.add(castParseTreeToAST(parseTree.getChildren().get(1), null)); // <Comp>
+                    children.add(castParseTreeToAST(parseTree.getChildren().get(2), null)); // <ExprArith>
+                }
+                parseTree.setChildren(children);
+             }
 
             case Comp -> {
                 parseTree = parseTree.getChildren().get(0);
