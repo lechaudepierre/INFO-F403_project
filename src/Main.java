@@ -53,8 +53,8 @@ public class Main {
         try{
             Parser parser = new Parser(new LexicalAnalyzer(new FileReader(inputPath)));
             ParseTree parseTree = parser.startParsing();
-            //AST_tree astTree = new AST_tree();
-            //parseTree = astTree.castParseTreeToAST(parseTree, null);
+            AST_tree astTree = new AST_tree();
+            parseTree = astTree.castParseTreeToAST(parseTree, null);
             if (requiresOutput) {
                 // Write the parse tree in the LaTeX file
                 FileWriter fileWriter = new FileWriter(outputPath);

@@ -1,23 +1,28 @@
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class AST_tree {
+
+    /**
+     * @param parseTree the node of the tree that we want to cast to AST
+     * @param context the context of that node, i.e. what it needs from the parent
+     * @return the AST
+     */
     public ParseTree castParseTreeToAST(ParseTree parseTree, ParseTree context) {
+
         Symbol currentSymbol = parseTree.getLabel();
+
         List<ParseTree> children = new ArrayList<>();
 
-        switch (currentSymbol.getType()) {
+        switch(currentSymbol.getType()) {
             case Program -> {
                 children.add(castParseTreeToAST(parseTree.getChildren().get(3), null));
                 parseTree.setChildren(children);
             }
             case Code -> {
-                if (!parseTree.getChildren().isEmpty()) {
-                    children.add(castParseTreeToAST(parseTree.getChildren().get(0), null));
-                    if (parseTree.getChildren().size() > 1) {
-                        children.add(castParseTreeToAST(parseTree.getChildren().get(2), null));
-                    }
+                children.add(castParseTreeToAST(parseTree.getChildren().get(0), null));
+                if (parseTree.getChildren().get(2).getLabel().getType() != LexicalUnit.EPSILON) {
+                    children.add(castParseTreeToAST(parseTree.getChildren().get(2), null));
                 }
                 parseTree.setChildren(children);
             }
@@ -30,28 +35,24 @@ public class AST_tree {
                 parseTree = parseTree.getChildren().get(1);
                 parseTree.setChildren(children);
             }
-            case ExprArith -> {
-                if (parseTree.getChildren().size() == 1) {
+            case ExprArith, Prod -> {
+                if (parseTree.getChildren().get(1).getLabel().getType() == LexicalUnit.EPSILON) {
                     parseTree = castParseTreeToAST(parseTree.getChildren().get(0), null);
                 } else {
-                    ParseTree left = castParseTreeToAST(parseTree.getChildren().get(0), null);
-                    ParseTree right = castParseTreeToAST(parseTree.getChildren().get(2), null);
-                    children.add(left);
-                    children.add(right);
-                    parseTree = parseTree.getChildren().get(1);
-                    parseTree.setChildren(children);
+                    context = castParseTreeToAST(parseTree.getChildren().get(0), null);
+                    parseTree = castParseTreeToAST(parseTree.getChildren().get(1), context);
                 }
             }
-            case Prod -> {
-                if (parseTree.getChildren().size() == 1) {
-                    parseTree = castParseTreeToAST(parseTree.getChildren().get(0), null);
+            case ExprArith2, Prod2 -> {
+                if (parseTree.getChildren().get(2).getLabel().getType() == LexicalUnit.EPSILON) {
+                    children.add(context);
+                    children.add(castParseTreeToAST(parseTree.getChildren().get(1), null));
+                    parseTree = new ParseTree(parseTree.getChildren().get(0).getLabel(), children);
                 } else {
-                    ParseTree left = castParseTreeToAST(parseTree.getChildren().get(0), null);
-                    ParseTree right = castParseTreeToAST(parseTree.getChildren().get(2), null);
-                    children.add(left);
-                    children.add(right);
-                    parseTree = parseTree.getChildren().get(1);
-                    parseTree.setChildren(children);
+                    children.add(context);
+                    children.add(castParseTreeToAST(parseTree.getChildren().get(1), null));
+                    context = new ParseTree(parseTree.getChildren().get(0).getLabel(), children);
+                    parseTree = castParseTreeToAST(parseTree.getChildren().get(2), context);
                 }
             }
             case Atom -> {
@@ -67,49 +68,45 @@ public class AST_tree {
             }
             case If -> {
                 children.add(castParseTreeToAST(parseTree.getChildren().get(2), null));
-                children.add(castParseTreeToAST(parseTree.getChildren().get(4), null));
-                if (parseTree.getChildren().size() > 6 && parseTree.getChildren().get(5).getLabel().getType() == LexicalUnit.ELSE) {
-                    children.add(castParseTreeToAST(parseTree.getChildren().get(5), null));
+                children.add(castParseTreeToAST(parseTree.getChildren().get(5), null));
+                if (parseTree.getChildren().get(6).getChildren().get(0).getLabel().getType() != LexicalUnit.END) {
                     children.add(castParseTreeToAST(parseTree.getChildren().get(6), null));
                 }
                 parseTree.setChildren(children);
             }
-            case While -> {
+            case EndIf -> {
+                parseTree = castParseTreeToAST(parseTree.getChildren().get(1), null);
+            }
+            case Cond -> {
+                if (parseTree.getChildren().get(1).getLabel().getType() == LexicalUnit.EPSILON) {
+                    parseTree = castParseTreeToAST(parseTree.getChildren().get(0), null);
+                } else {
+                    context = castParseTreeToAST(parseTree.getChildren().get(0), null);
+                    parseTree = castParseTreeToAST(parseTree.getChildren().get(1), context);
+                }
+            }
+
+            case CondAtom -> {
+                children.add(castParseTreeToAST(parseTree.getChildren().get(0), null));
                 children.add(castParseTreeToAST(parseTree.getChildren().get(2), null));
-                children.add(castParseTreeToAST(parseTree.getChildren().get(4), null));
+                parseTree = castParseTreeToAST(parseTree.getChildren().get(1), null);
                 parseTree.setChildren(children);
             }
-            case Output, Input -> {
+
+            case Comp -> {
+                parseTree = parseTree.getChildren().get(0);
+            }
+            case While -> {
+                children.add(castParseTreeToAST(parseTree.getChildren().get(2), null));
+                children.add(castParseTreeToAST(parseTree.getChildren().get(5), null));
+                parseTree.setChildren(children);
+            }
+            case Input, Output -> {
                 children.add(parseTree.getChildren().get(2));
                 parseTree.setChildren(children);
             }
-            case Cond -> {
-                ParseTree left = castParseTreeToAST(parseTree.getChildren().get(0), null);
-                if (parseTree.getChildren().size() > 1) {
-                    ParseTree right = castParseTreeToAST(parseTree.getChildren().get(2), null);
-                    children.add(left);
-                    children.add(right);
-                    parseTree = parseTree.getChildren().get(1);
-                    parseTree.setChildren(children);
-                } else {
-                    parseTree = left;
-                }
-            }
-            case Comp -> {
-                ParseTree left = castParseTreeToAST(parseTree.getChildren().get(0), null);
-                ParseTree right = castParseTreeToAST(parseTree.getChildren().get(2), null);
-                children.add(left);
-                children.add(right);
-                parseTree = parseTree.getChildren().get(1);
-                parseTree.setChildren(children);
-            }
-            default -> {
-                for (ParseTree child : parseTree.getChildren()) {
-                    children.add(castParseTreeToAST(child, null));
-                }
-                parseTree.setChildren(children);
-            }
         }
+
         return parseTree;
     }
 }
