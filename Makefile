@@ -11,9 +11,9 @@ SOURCES = $(SRC_DIR)/LexicalAnalyzer.java $(SRC_DIR)/Main.java $(SRC_DIR)/Symbol
 TEST_FILES := $(wildcard $(TEST_DIR)/*.gls)
 INPUT_FILE = test/Euclid.gls
 TEX_FILE = more/output.tex
-OUTPUT_JAR = dist/part2.jar
+OUTPUT_JAR = dist/part3.jar
 MAIN_CLASS = Main
-DOC_DIR = doc/javadocpart2
+DOC_DIR = doc/javadocpart3
 
 # Default target (compile everything)
 all: $(SRC_DIR)/LexicalAnalyzer.java $(OUTPUT_JAR)
