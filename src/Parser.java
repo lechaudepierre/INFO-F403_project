@@ -236,7 +236,7 @@ public class Parser {
                 leaves.add(CondAtom());
                 leaves.add(CondImpl());
             }
-            case RPAREN, RBRACK -> {
+            case RPAREN, RBRACK, PIPE -> {
                 System.out.print("27 ");
                 return new ParseTree(new Symbol(LexicalUnit.EPSILON, "$\\epsilon$"));
             }
@@ -330,7 +330,7 @@ public class Parser {
                 leaves.add(Prod());
                 leaves.add(ExprArith2());
             }
-            case COLUMN, RPAREN, EQUAL, SMALEQ, SMALLER, RBRACK -> {
+            case COLUMN, RPAREN, EQUAL, SMALEQ, SMALLER, RBRACK, PIPE -> {
                 System.out.print("17 ");
                 return new ParseTree(new Symbol(LexicalUnit.EPSILON, "$\\epsilon$"));
             }
@@ -372,7 +372,7 @@ public class Parser {
                 leaves.add(Atom());
                 leaves.add(Prod2());
             }
-            case COLUMN, PLUS, MINUS, RPAREN, EQUAL, SMALEQ, SMALLER, RBRACK -> {
+            case COLUMN, PLUS, MINUS, RPAREN, EQUAL, SMALEQ, SMALLER, RBRACK, PIPE -> {
                 System.out.print("14 ");
                 return new ParseTree(new Symbol(LexicalUnit.EPSILON, "$\\epsilon$"));
             }
