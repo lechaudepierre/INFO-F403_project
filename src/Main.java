@@ -61,6 +61,8 @@ public class Main {
                 fileWriter.write(parseTree.toLaTeX());
                 fileWriter.close();
             }
+            Compiler compiler = new Compiler(parseTree);
+            compiler.compile();
 
             /*Symbol symbol = lexicalAnalyzer.nextSymbol();
             while(symbol.getType() != LexicalUnit.EOS){

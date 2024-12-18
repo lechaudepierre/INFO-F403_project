@@ -78,17 +78,14 @@ public class AST_tree {
                 parseTree = castParseTreeToAST(parseTree.getChildren().get(1), null);
             }
             case Cond -> {
-              
-                ParseTree condAtomResult = castParseTreeToAST(parseTree.getChildren().get(0), null);
-                ParseTree condImplNode = parseTree.getChildren().get(1);
+                //ParseTree condAtomResult = castParseTreeToAST(parseTree.getChildren().get(0), null);
+                //ParseTree condImplNode = parseTree.getChildren().get(1);
+                if (parseTree.getChildren().get(1).getLabel().getType() == LexicalUnit.EPSILON) {
 
-                if (condImplNode.getLabel().getType() == LexicalUnit.EPSILON) {
-                
-                    parseTree = condAtomResult;
+                    parseTree = castParseTreeToAST(parseTree.getChildren().get(0), null);
                 } else {
-                    // condImplNode is not epsilon
-                    ParseTree condImplResult = castParseTreeToAST(condImplNode, null); 
-                    condImplResult.getChildren().add(0, condAtomResult);
+                    ParseTree condImplResult = castParseTreeToAST(parseTree.getChildren().get(1), null); 
+                    condImplResult.getChildren().add(0, castParseTreeToAST(parseTree.getChildren().get(0), null));
                     parseTree = condImplResult; 
                 }
             }

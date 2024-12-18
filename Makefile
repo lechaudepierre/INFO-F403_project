@@ -7,9 +7,9 @@ JAVADOC = javadoc
 # Source and target files
 SRC_DIR = src
 TEST_DIR = test/testpart3
-SOURCES = $(SRC_DIR)/LexicalAnalyzer.java $(SRC_DIR)/Main.java $(SRC_DIR)/Symbol.java $(SRC_DIR)/LexicalUnit.java $(SRC_DIR)/Parser.java $(SRC_DIR)/ParseTree.java $(SRC_DIR)/AST_tree.java
+SOURCES = $(SRC_DIR)/LexicalAnalyzer.java $(SRC_DIR)/Main.java $(SRC_DIR)/Symbol.java $(SRC_DIR)/LexicalUnit.java $(SRC_DIR)/Parser.java $(SRC_DIR)/ParseTree.java $(SRC_DIR)/AST_tree.java $(SRC_DIR)/Compiler.java
 TEST_FILES := $(wildcard $(TEST_DIR)/*.gls)
-INPUT_FILE = test/testpart3/implies.gls
+INPUT_FILE = test/Euclid.gls
 TEX_FILE = more/outputAST.tex
 OUTPUT_JAR = dist/part3.jar
 MAIN_CLASS = Main
