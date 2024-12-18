@@ -78,38 +78,62 @@ public class AST_tree {
                 parseTree = castParseTreeToAST(parseTree.getChildren().get(1), null);
             }
             case Cond -> {
-                if (parseTree.getChildren().get(1).getLabel().getType() == LexicalUnit.EPSILON) {
-                    parseTree = castParseTreeToAST(parseTree.getChildren().get(0), null);
+              
+                ParseTree condAtomResult = castParseTreeToAST(parseTree.getChildren().get(0), null);
+                ParseTree condImplNode = parseTree.getChildren().get(1);
+
+                if (condImplNode.getLabel().getType() == LexicalUnit.EPSILON) {
+                
+                    parseTree = condAtomResult;
+                } else {
+                    // condImplNode is not epsilon
+                    ParseTree condImplResult = castParseTreeToAST(condImplNode, null); 
+                    condImplResult.getChildren().add(0, condAtomResult);
+                    parseTree = condImplResult; 
                 }
-                else {
-                    children.add(castParseTreeToAST(parseTree.getChildren().get(0), null)); // <CondAtom>
-                    children.add(castParseTreeToAST(parseTree.getChildren().get(1), null)); // <CondImpl>
-                    
-                }
-                parseTree.setChildren(children);
             }
             case CondImpl -> {
-                
-                children.add(castParseTreeToAST(parseTree.getChildren().get(1), null)); // <CondAtom>
-                children.add(castParseTreeToAST(parseTree.getChildren().get(2), null)); // <CondImpl>
-                parseTree = parseTree.getChildren().get(0);
-                parseTree.setChildren(children);
+                        
+                // Grammar: CondImpl -> IMPLIES CondAtom CondImpl | EPSILON
+                if (parseTree.getChildren().get(0).getLabel().getType() == LexicalUnit.EPSILON) {
+                    // No operator, just return epsilon or something that indicates no more conditions
+                    parseTree = parseTree.getChildren().get(0); // this is an EPSILON node
+                } else {
+                    // IMPLIES CondAtom CondImpl
+                    ParseTree impliesToken = parseTree.getChildren().get(0); // IMPLIES node
+                    ParseTree condAtomResult = castParseTreeToAST(parseTree.getChildren().get(1), null);
+                    ParseTree nextImpl = castParseTreeToAST(parseTree.getChildren().get(2), null);
+
+                    // nextImpl could be epsilon or another IMPLIES chain
+                    children.add(condAtomResult);
+                    if (nextImpl.getLabel().getType() != LexicalUnit.EPSILON) {
+                        // nextImpl is an IMPLIES node with its own children
+                        // We attach nextImpl as a child. This naturally forms a chain of conditions.
+                        children.add(nextImpl);
+                    }
+
+                    impliesToken.setChildren(children);
+                    parseTree = impliesToken;
+                }
             }
 
 
             case CondAtom -> {
-                if (parseTree.getChildren().get(0).getLabel().getType() == LexicalUnit.PIPE &&
+                if (parseTree.getChildren().size() == 3 &&
+                parseTree.getChildren().get(0).getLabel().getType() == LexicalUnit.PIPE &&
                 parseTree.getChildren().get(2).getLabel().getType() == LexicalUnit.PIPE) {
-                    // |<Cond>|
-                    children.add(castParseTreeToAST(parseTree.getChildren().get(1), null)); // <Cond>
-                    
+                
+                parseTree = castParseTreeToAST(parseTree.getChildren().get(1), null); 
                 } else {
-                    // <ExprArith> <Comp> <ExprArith>
-                    children.add(castParseTreeToAST(parseTree.getChildren().get(0), null)); // <ExprArith>
-                    children.add(castParseTreeToAST(parseTree.getChildren().get(1), null)); // <Comp>
-                    children.add(castParseTreeToAST(parseTree.getChildren().get(2), null)); // <ExprArith>
+                // <ExprArith> <Comp> <ExprArith>
+                ParseTree leftExpr = castParseTreeToAST(parseTree.getChildren().get(0), null);
+                ParseTree compNode = castParseTreeToAST(parseTree.getChildren().get(1), null);
+                ParseTree rightExpr = castParseTreeToAST(parseTree.getChildren().get(2), null);
+
+                // compNode is something like "SMALLER", "SMALEQ", etc.
+                compNode.setChildren(List.of(leftExpr, rightExpr));
+                parseTree = compNode;
                 }
-                parseTree.setChildren(children);
              }
 
             case Comp -> {
