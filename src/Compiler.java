@@ -141,6 +141,18 @@ public class Compiler {
                     case EQUAL -> System.out.printf("        %%%d = icmp eq i32 %%%d, %%%d\n", counter++, left, right);
                 }
             }
+            case IMPLIES -> {
+                compileNode(parseTree.getChildren().get(0));
+                int left = this.counter - 1;
+
+                compileNode(parseTree.getChildren().get(1));
+                int right = this.counter - 1;
+
+                
+                System.out.printf("        %%%d = xor i1 %%%d, true\n", counter++, left);
+                left = counter - 1;
+                System.out.printf("        %%%d = or i1 %%%d, %%%d\n", counter++, left, right);
+            }
             case If -> {
                 compileNode(parseTree.getChildren().get(0));
                 int comparison = this.counter - 1;
