@@ -62,7 +62,7 @@ public class Parser {
                 //System.out.print("3 ");
                 return new ParseTree(new Symbol(LexicalUnit.EPSILON, "$\\epsilon$"));
             }
-            case IF, WHILE, OUTPUT, INPUT, VARNAME -> {
+            case IF, WHILE, FOR, OUTPUT, INPUT, VARNAME -> {
                 //System.out.print("2 ");
                 leaves.add(Instruction());
                 leaves.add(match(LexicalUnit.COLUMN)); 
@@ -88,6 +88,10 @@ public class Parser {
             case WHILE -> {
                 //System.out.print("6 ");
                 leaves.add(While());
+            }
+            case FOR -> {
+                //System.out.print("6 ");
+                leaves.add(For());
             }
             case OUTPUT -> {
                 //System.out.print("7 ");
@@ -159,7 +163,7 @@ public class Parser {
             default -> throw new RuntimeException();
         }
         return new ParseTree(new Symbol(LexicalUnit.EndIf, "EndIf"), leaves);
-    }
+    } 
 
     /**
      * Parses a while loop.
@@ -177,6 +181,21 @@ public class Parser {
         leaves.add(Code());
         leaves.add(match(LexicalUnit.END));
         return new ParseTree(new Symbol(LexicalUnit.While, "While"), leaves);
+    }
+
+    private ParseTree For() {
+        //System.out.print("33 ");
+        List<ParseTree> leaves = new ArrayList<>();
+        leaves.add(match(LexicalUnit.FOR));
+        leaves.add(match(LexicalUnit.LBRACK));
+        leaves.add(Assign());
+        leaves.add(match(LexicalUnit.TO));
+        leaves.add(ExprArith());
+        leaves.add(match(LexicalUnit.RBRACK));
+        leaves.add(match(LexicalUnit.REPEAT));
+        leaves.add(Code());
+        leaves.add(match(LexicalUnit.END));
+        return new ParseTree(new Symbol(LexicalUnit.For, "For"), leaves);
     }
 
     /**
@@ -330,7 +349,7 @@ public class Parser {
                 leaves.add(Prod());
                 leaves.add(ExprArith2());
             }
-            case COLUMN, RPAREN, EQUAL, SMALEQ, SMALLER, RBRACK, PIPE, IMPLIES -> {
+            case COLUMN, RPAREN, EQUAL, SMALEQ, SMALLER, RBRACK, PIPE, IMPLIES, TO -> {
                 //System.out.print("17 ");
                 return new ParseTree(new Symbol(LexicalUnit.EPSILON, "$\\epsilon$"));
             }
@@ -372,7 +391,7 @@ public class Parser {
                 leaves.add(Atom());
                 leaves.add(Prod2());
             }
-            case COLUMN, PLUS, MINUS, RPAREN, EQUAL, SMALEQ, SMALLER, RBRACK, PIPE, IMPLIES -> {
+            case COLUMN, PLUS, MINUS, RPAREN, EQUAL, SMALEQ, SMALLER, RBRACK, PIPE, IMPLIES, TO -> {
                 //System.out.print("14 ");
                 return new ParseTree(new Symbol(LexicalUnit.EPSILON, "$\\epsilon$"));
             }

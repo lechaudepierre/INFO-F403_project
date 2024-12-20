@@ -1,6 +1,6 @@
 !! Euclid's algorithm !!
 
-LET Euclidean_algorithm BE
+LET Implies_test BE
   IN(a):
   IN(b):
   WHILE {2 < b -> 2 < a} REPEAT

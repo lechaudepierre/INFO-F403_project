@@ -54,6 +54,10 @@ public enum LexicalUnit{
     SMALLER,
     /** <code>WHILE</code> */
     WHILE,
+    /** <code>FOR</code> */
+    FOR,
+    /** <code>TO</code> */
+    TO,
     /** <code>REPEAT</code> */
     REPEAT,
     /** <code>OUT</code> */
@@ -81,6 +85,7 @@ public enum LexicalUnit{
     CondAtom,
     Comp, 
     While, 
+    For,
     Output, 
     Input, 
     EndIf

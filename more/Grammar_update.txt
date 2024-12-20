@@ -33,3 +33,4 @@
 [33] <While>            → WHILE {<Cond>} REPEAT <Code> END
 [34] <Output>           → OUT([VarName])
 [35] <Input>            → IN([VarName])
+[36] <While>            → WHILE {<Assign> TO <ExprArith>} REPEAT <Code> END

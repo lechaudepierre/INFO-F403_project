@@ -141,6 +141,12 @@ public class AST_tree {
                 children.add(castParseTreeToAST(parseTree.getChildren().get(5), null));
                 parseTree.setChildren(children);
             }
+            case For -> {
+                children.add(castParseTreeToAST(parseTree.getChildren().get(2), null));
+                children.add(castParseTreeToAST(parseTree.getChildren().get(4), null));
+                children.add(castParseTreeToAST(parseTree.getChildren().get(7), null));
+                parseTree.setChildren(children);
+            }
             case Input, Output -> {
                 children.add(parseTree.getChildren().get(2));
                 parseTree.setChildren(children);

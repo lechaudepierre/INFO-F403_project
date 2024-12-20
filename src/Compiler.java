@@ -204,6 +204,40 @@ public class Compiler {
                 System.out.printf("    label%d:\n", endWhile);
 
             }
+            case For -> {
+                int forCond = label++;
+                int forCode = label++;
+                int endFor = label++;
+
+                // Alloca for variable
+                compileNode(parseTree.getChildren().get(0));
+
+                // Jump to the For statement
+                System.out.printf("        br label %%label%d\n", forCond);
+
+                // Creates the condition part of the For
+                System.out.printf("    label%d:\n", forCond);
+                
+                compileNode(parseTree.getChildren().get(0).getChildren().get(0));
+                int i = counter - 1;
+                compileNode(parseTree.getChildren().get(1));
+                int stopFor = counter - 1;
+                System.out.printf("        %%%d = icmp sle i32 %%%d, %%%d\n", counter++, i, stopFor);
+                int comparison = counter -1;
+                // Check the condition and goes either to the code or jump at the end of the While
+                System.out.printf("        br i1 %%%d, label %%label%d, label %%label%d\n", comparison, forCode, endFor);
+
+                // Creates the code part of the While
+                System.out.printf("    label%d:\n", forCode);
+                compileNode(parseTree.getChildren().get(2));
+
+                // Jumps back to condition after executing the code in the While
+                System.out.printf("        br label %%label%d\n", forCond);
+
+                // Allows for more code to come after the while
+                System.out.printf("    label%d:\n", endFor);
+
+            }
             case Output -> {
                 String variable = parseTree.getChildren().get(0).getLabel().getValue().toString();
                 if (!variables.add(variable)) {
